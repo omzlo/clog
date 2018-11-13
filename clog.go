@@ -106,28 +106,53 @@ func Terminate() {
 	os.Exit(1)
 }
 
+func Fatal(format string, v ...interface{}) {
+	Log(ERROR, format, v...)
+	Terminate()
+}
+
+func (lm *LogManager) Warning(format string, v ...interface{}) {
+	lm.Log(WARNING, format, v...)
+}
+
 func Warning(format string, v ...interface{}) {
 	Log(WARNING, format, v...)
+}
+
+func (lm *LogManager) Error(format string, v ...interface{}) {
+	lm.Log(ERROR, format, v...)
 }
 
 func Error(format string, v ...interface{}) {
 	Log(ERROR, format, v...)
 }
-func Fatal(format string, v ...interface{}) {
-	Log(ERROR, format, v...)
-	Terminate()
+
+func (lm *LogManager) Info(format string, v ...interface{}) {
+	lm.Log(INFO, format, v...)
 }
 
 func Info(format string, v ...interface{}) {
 	Log(INFO, format, v...)
 }
 
+func (lm *LogManager) Debug(format string, v ...interface{}) {
+	lm.Log(DEBUG, format, v...)
+}
+
 func Debug(format string, v ...interface{}) {
 	Log(DEBUG, format, v...)
 }
 
+func (lm *LogManager) DebugX(format string, v ...interface{}) {
+	lm.Log(DEBUGX, format, v...)
+}
+
 func DebugX(format string, v ...interface{}) {
 	Log(DEBUGX, format, v...)
+}
+
+func (lm *LogManager) DebugXX(format string, v ...interface{}) {
+	lm.Log(DEBUGXX, format, v...)
 }
 
 func DebugXX(format string, v ...interface{}) {
