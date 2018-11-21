@@ -21,6 +21,33 @@ const (
 	NONE
 )
 
+var LogLevelStrings = [...]string{
+	"DEBUGXX",
+	"DEBUGX",
+	"DEBUG",
+	"INFO",
+	"WARNING",
+	"ERROR",
+	"NONE",
+}
+
+func (ll *LogLevel) Set(s string) error {
+	for i, level := range LogLevelStrings {
+		if s == level {
+			*ll = LogLevel(i)
+			return nil
+		}
+	}
+	return fmt.Errorf("Unrecognized loglevel '%s'", s)
+}
+
+func (ll LogLevel) String() string {
+	if ll > NONE {
+		return "NONE"
+	}
+	return LogLevelStrings[ll]
+}
+
 type logEntry struct {
 	level LogLevel
 	text  string
