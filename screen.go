@@ -63,5 +63,5 @@ func NewFileLogWriter(fname string) *FileLogWriter {
 }
 
 func (flw *FileLogWriter) LogWrite(level LogLevel, text string) {
-	flw.filelog.Printf(plain_tags[level] + " " + text)
+	flw.filelog.Println(plain_tags[level] + " " + text)
 }
