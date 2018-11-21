@@ -99,7 +99,7 @@ func SetLogLevel(level LogLevel) {
 }
 
 func (lm *LogManager) Log(level LogLevel, format string, v ...interface{}) {
-	if level >= lm.logLevel {
+	if level >= lm.logLevel && lm.firstBucket != nil {
 		lm.logQueue <- &logEntry{level, fmt.Sprintf(format, v...)}
 	}
 }
