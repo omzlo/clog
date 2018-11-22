@@ -128,7 +128,7 @@ func Sync() {
 }
 
 func Terminate() {
-	Log(INFO, "Terminating.")
+	Log(DEBUGXX, "Terminating.")
 	DefaultLogManager.Sync()
 	os.Exit(1)
 }
