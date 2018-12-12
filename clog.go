@@ -127,15 +127,15 @@ func Sync() {
 	DefaultLogManager.Sync()
 }
 
-func Terminate() {
+func Terminate(exit_code int) {
 	Log(DEBUGXX, "Terminating.")
 	DefaultLogManager.Sync()
-	os.Exit(1)
+	os.Exit(exit_code)
 }
 
 func Fatal(format string, v ...interface{}) {
 	Log(ERROR, format, v...)
-	Terminate()
+	Terminate(1)
 }
 
 func (lm *LogManager) Warning(format string, v ...interface{}) {
