@@ -3,6 +3,8 @@ package clog
 import (
 	"fmt"
 	"os"
+	"sync/atomic"
+	"time"
 )
 
 type LogWriter interface {
@@ -63,6 +65,7 @@ type LogManager struct {
 	logLevel    LogLevel
 	firstBucket *bucket
 	lastBucket  *bucket
+	length      int32
 }
 
 var DefaultLogManager *LogManager = NewLogManager()
@@ -100,6 +103,7 @@ func SetLogLevel(level LogLevel) {
 
 func (lm *LogManager) Log(level LogLevel, format string, v ...interface{}) {
 	if level >= lm.logLevel && lm.firstBucket != nil {
+		atomic.AddInt32(&lm.length, 1)
 		lm.logQueue <- &logEntry{level, fmt.Sprintf(format, v...)}
 	}
 }
@@ -115,11 +119,13 @@ func (lm *LogManager) processLogQueue() {
 		for iter := lm.firstBucket; iter != nil; iter = iter.next {
 			iter.writer.LogWrite(entry.level, entry.text)
 		}
+		atomic.AddInt32(&lm.length, -1)
 	}
 }
 
 func (lm *LogManager) Sync() {
-	for len(lm.logQueue) > 0 {
+	for lm.length > 0 {
+		time.Sleep(100 * time.Millisecond)
 	}
 }
 
