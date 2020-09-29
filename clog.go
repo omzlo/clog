@@ -50,6 +50,10 @@ func (ll LogLevel) String() string {
 	return LogLevelStrings[ll]
 }
 
+func (ll *LogLevel) UnmarshalText(text []byte) error {
+	return ll.Set(string(text))
+}
+
 type logEntry struct {
 	level LogLevel
 	text  string
