@@ -66,6 +66,7 @@ type LogManager struct {
 	firstBucket *bucket
 	lastBucket  *bucket
 	length      int32
+	running     bool
 }
 
 var DefaultLogManager *LogManager = NewLogManager()
@@ -73,6 +74,7 @@ var DefaultLogManager *LogManager = NewLogManager()
 func NewLogManager() *LogManager {
 	return &LogManager{
 		logLevel: INFO,
+		running:  false,
 	}
 }
 
@@ -113,6 +115,10 @@ func Log(level LogLevel, format string, v ...interface{}) {
 }
 
 func (lm *LogManager) processLogQueue() {
+	if lm.running {
+		panic("Log manager already running!")
+	}
+	lm.running = true
 	for {
 		entry := <-lm.logQueue
 
